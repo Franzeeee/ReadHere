@@ -14,21 +14,40 @@
     <header>
         <nav>
             <div class="nav-bar">
+
                 <a href="{{ route('home') }}"><h1>Read<span id="coloredLogo">Here</span>.</h1></a>
+
                 <ul class="navLinks">
                     <li><a href="{{ route('home') }}" id="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
                     <li><a href="{{ route('blog.index') }}" id="{{ request()->routeIs('blog.index') ? 'active' : '' }}">Blogs</a></li>
                     <li><a href="{{ route('about') }}" id="{{ request()->routeIs('about') ? 'active' : '' }}">About</a></li>
+                    @auth
                     <li><a href="{{ route('blog.create') }}" id="{{ request()->routeIs('blog.create') ? 'active' : '' }}">Post</a></li>
+                    @endauth
                 </ul>
+
                 <div class="navLinks-2">
+
                    <ul>
-                    <li id="{{ request()->routeIs('login') ? 'active' : '' }}" onclick="window.location.href ='{{ route('login') }}'">Login</li>
-                    <li>|</li>
-                    <li>Register</li>
+                   
+                    @auth
+                        <li class="username"><p><b>{{ Auth::user()->name }}</b></p></li>
+                        <li>|</li>
+                        <li onclick="window.location.href ='{{ route('logout') }}'">Logout</li>
+                    @else
+                        <li id="{{ request()->routeIs('login') ? 'active' : '' }}" onclick="window.location.href ='{{ route('login') }}'">Login</li>
+                        <li>|</li>
+                        <li id="{{ request()->routeIs('register') ? 'active' : '' }}" onclick="window.location.href ='{{ route('register') }}'">Register</li>
+                    @endauth
+                    
                    </ul>
+
                 </div>
+
             </div>
+           
+
+
         @if(session('success'))
             <div class="success">
                 <img src="{{ asset('img/check.png') }}">
@@ -118,6 +137,30 @@
         </div>
     </footer>
 
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}">
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let successElement = document.querySelector('.success');
+
+        // Function to handle the scroll event
+        function handleScroll() {
+            // Check if the document is scrolled (you can adjust the threshold as needed)
+            if (window.scrollY > 50) {
+                successElement.style.opacity = '0';
+                successElement.style.display = 'none';
+
+                // Remove the scroll event listener after the initial execution
+                window.removeEventListener('scroll', handleScroll);
+            }
+        }
+
+        // Attach the handleScroll function to the scroll event
+        window.addEventListener('scroll', handleScroll);
+
+        // Initial check on page load
+        handleScroll();
+    });
+    </script>
 </body>
 </html>

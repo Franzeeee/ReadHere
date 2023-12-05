@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostFormRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -14,7 +15,7 @@ class PostController extends Controller
     public function index()
     {
 
-        $posts = Post::paginate(9);
+        $posts = Post::orderBy('created_at', 'desc')->paginate(9);
         return view('posts.index', compact('posts'));
     }
 
@@ -31,9 +32,9 @@ class PostController extends Controller
      */
     public function store(PostFormRequest $request)
     {
-        $validated =  $request->validated();
+        $validated = $request->validated();
+        $post = $request->user()->posts()->create($validated);
 
-        $post = Post::create($validated);
 
         return redirect()
             ->route('blog.show', $post->id)
@@ -55,7 +56,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-
+        $this->authorize('update', $post);
         return view('posts.edit', compact('post'));
     }
 
@@ -64,9 +65,9 @@ class PostController extends Controller
      */
     public function update(PostFormRequest $request, $id)
     {
-        $validated = $request->validated();
         $post = Post::find($id);
-
+        $this->authorize('update', $post);
+        $validated = $request->validated();
         $post->update($validated);
 
         return redirect()
@@ -80,6 +81,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
+        $this->authorize('delete', $post);
         $post->delete();
 
         return redirect()

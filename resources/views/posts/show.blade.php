@@ -23,30 +23,32 @@
     <div class="container show-container">
         <div class="row">
 
+           @can('update', $post)
            <div class="switch-container">
-                <div class="switchGroup">
-                    <div class="switch">
-                        <div class="inner-cicle">
-                            <p>Off</p>
-                        </div>
+            <div class="switchGroup">
+                <div class="switch">
+                    <div class="inner-cicle">
+                        <p>Off</p>
                     </div>
-                    <p id="switchLabel">Manage Blog</p>
                 </div>
-                <div class="manageButton">
-                    <div class="edit" title="Edit" onclick="window.location.href = '{{ route('blog.edit', $post->id) }}'">
-                        <img src="{{ asset('img/edit-icon.png') }}">
-                    </div>
-                    <form action="{{ route('blog.destroy', $post->id) }}" method="POST" class="delete">
-                        @csrf
-                        @method('delete')
-                       <button type="submit"><img src="{{ asset('img/delete-icon.png') }}"></button>
-                    </form>
+                <p id="switchLabel">Manage Blog</p>
+            </div>
+            <div class="manageButton">
+                <div class="edit" title="Edit" onclick="window.location.href = '{{ route('blog.edit', $post->id) }}'">
+                    <img src="{{ asset('img/edit-icon.png') }}">
                 </div>
-           </div>
+                <form action="{{ route('blog.destroy', $post->id) }}" method="POST" class="delete">
+                    @csrf
+                    @method('delete')
+                   <button type="submit"><img src="{{ asset('img/delete-icon.png') }}"></button>
+                </form>
+            </div>
+       </div>
+           @endcan
 
             <div class="col single-col bg-white">
                 <h1>{{$post->title}}</h1>
-                <p id="author">By: <b>Author</b></p>
+                <p id="author">By: <b>{{ $post->user->name }}</b></p>
                 <div class="single-content">
                     <p>{{ $post->description }}</p>
                 </div>

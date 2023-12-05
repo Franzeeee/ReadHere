@@ -422,6 +422,7 @@ main {
     gap: 8px;
     overflow: hidden;
     animation: fadeOut 4s forwards;
+    z-index: 10;
 }
 
 
@@ -738,7 +739,7 @@ main {
 /*Styles for website's footer*/
 footer {
     width: 100%;
-    height: 90vh;
+    height: 90svh;
     background-color: #222831;
     padding: 5rem 0 3rem 0;
     display: flex;
@@ -746,7 +747,6 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 3.8rem;
-    max-height: 700px;
 }
 
 footer .footer-last {

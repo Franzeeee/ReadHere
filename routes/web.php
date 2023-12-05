@@ -20,7 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
-route::resource('blog', PostController::class);
+route::resource('blog', PostController::class)->except(['index', 'show'])->middleware('auth');
+Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
+Route::get('/blog/{blog}', [PostController::class, 'show'])->name('blog.show');
 
 #Routes for Login.
-Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
+Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+Route::match(['get', 'post'], '/register', [AuthController::class, 'register'])->name('register')->middleware('guest');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');

@@ -5,6 +5,7 @@ function handleIntersection(entries, observer) {
         if (entry.target.tagName === "MAIN") {
             if (entry.isIntersecting && entry.intersectionRatio >= 0.01) {
                 document.querySelector('nav').classList.add('scrolled');
+                // document.querySelector('.success').style.opacity = "0";
             } else {
                 document.querySelector('nav').classList.remove('scrolled');
             }
